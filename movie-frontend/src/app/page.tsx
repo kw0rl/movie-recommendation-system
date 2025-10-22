@@ -11,6 +11,11 @@ interface Movie {
   vote_average?: number;
 }
 
+interface Genre {
+  id: number;
+  name: string;
+}
+
 interface User {
   id: number;
   name: string;
@@ -25,6 +30,8 @@ import FavoriteButton from '../components/FavoriteButton';
 
 export default function Home() {
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [genres, setGenres] = useState<Genre[]>([]);
+  const [selectedGenre, setSelectedGenre] = useState<number | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
@@ -44,6 +51,22 @@ export default function Home() {
     }
   }, []);
 
+  useEffect(() => {
+    const fetchGenres = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/genres`);
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const data = await res.json();
+        setGenres(data.genres);
+      } catch (error) {
+        console.error("Failed to fetch genres:", error);
+      }
+    };
+    fetchGenres();
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -54,7 +77,11 @@ export default function Home() {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies/popular`);
+        let url = `${process.env.NEXT_PUBLIC_API_URL}/movies/popular`;
+        if (selectedGenre) {
+          url += `?genre=${selectedGenre}`;
+        }
+        const res = await fetch(url);
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
@@ -73,7 +100,7 @@ export default function Home() {
       }
     };
     fetchMovies();
-  }, []);
+  }, [selectedGenre]);
 
   return (
     <div className="min-h-screen bg-white text-black" style={{ fontFamily: "'Patrick Hand', cursive" }}>
@@ -163,6 +190,33 @@ export default function Home() {
               <span className="text-xs sm:text-sm">✧ Hand-picked for you ✧</span>
             </div>
           </div>
+        </div>
+
+        {/* Genre Filter */}
+        <div className="mb-8 sm:mb-12 flex flex-wrap justify-center gap-2 sm:gap-4">
+          <button
+            onClick={() => setSelectedGenre(null)}
+            className={`px-3 sm:px-4 py-2 text-sm sm:text-base rounded-full font-bold transition-all duration-200 sketch-border ${
+              selectedGenre === null
+                ? 'bg-blue-500 text-white sketch-shadow-inset'
+                : 'bg-white text-black hover:bg-gray-100'
+            }`}
+          >
+            All
+          </button>
+          {genres.map((genre) => (
+            <button
+              key={genre.id}
+              onClick={() => setSelectedGenre(genre.id)}
+              className={`px-3 sm:px-4 py-2 text-sm sm:text-base rounded-full font-bold transition-all duration-200 sketch-border ${
+                selectedGenre === genre.id
+                  ? 'bg-blue-500 text-white sketch-shadow-inset'
+                  : 'bg-white text-black hover:bg-gray-100'
+              }`}
+            >
+              {genre.name}
+            </button>
+          ))}
         </div>
 
         {/* Sketch-style Movie Grid */}

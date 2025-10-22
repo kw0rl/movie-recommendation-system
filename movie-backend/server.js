@@ -23,39 +23,69 @@ app.use('/api/favorites', favoritesRoutes);
 app.use('/api/recommendations', recommendationsRoutes);
 app.use('/api/ai', aiRoutes);
 
+app.get('/api/genres', async (req, res) => {
+    try {
+        const response = await axios.get(`${TMDB_BASE_URL}/genre/movie/list`, {
+            params: { api_key: API_KEY }
+        });
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error fetching genres:', error.message);
+        if (error.response) {
+            console.error('TMDB error status:', error.response.status);
+            console.error('TMDB error data:', error.response.data);
+        }
+        res.status(500).json({ error: 'Failed to fetch genres' });
+    }
+});
+
 app.get('/api/movies/popular', async (req, res) => {
+    const { genre } = req.query;
+
     try {
         console.log('API_KEY:', API_KEY ? 'Present' : 'Missing');
         console.log('Making request to TMDB...');
         
-        // Get multiple pages to increase number of movies
-        const page1 = axios.get(`${TMDB_BASE_URL}/movie/popular`, {
-            params: { api_key: API_KEY, page: 1 }
-        });
-        const page2 = axios.get(`${TMDB_BASE_URL}/movie/popular`, {
-            params: { api_key: API_KEY, page: 2 }
-        });
-        const page3 = axios.get(`${TMDB_BASE_URL}/movie/popular`, {
-            params: { api_key: API_KEY, page: 3 }
-        });
+        let allMovies = [];
+
+        if (genre) {
+            // Fetch movies by genre
+            const response = await axios.get(`${TMDB_BASE_URL}/discover/movie`, {
+                params: {
+                    api_key: API_KEY,
+                    with_genres: genre,
+                    page: 1
+                }
+            });
+            allMovies = response.data.results;
+        } else {
+            // Get multiple pages to increase number of movies
+            const page1 = axios.get(`${TMDB_BASE_URL}/movie/popular`, {
+                params: { api_key: API_KEY, page: 1 }
+            });
+            const page2 = axios.get(`${TMDB_BASE_URL}/movie/popular`, {
+                params: { api_key: API_KEY, page: 2 }
+            });
+            const page3 = axios.get(`${TMDB_BASE_URL}/movie/popular`, {
+                params: { api_key: API_KEY, page: 3 }
+            });
+
+            const [response1, response2, response3] = await Promise.all([page1, page2, page3]);
+
+            // Combine results from all pages
+            allMovies = [
+                ...response1.data.results,
+                ...response2.data.results,
+                ...response3.data.results
+            ];
+        }
         
-        const [response1, response2, response3] = await Promise.all([page1, page2, page3]);
-        
-        // Combine results from all pages
-        const allMovies = [
-            ...response1.data.results,
-            ...response2.data.results,
-            ...response3.data.results
-        ];
-        
-        console.log('TMDB response status:', response1.status);
         console.log('Total number of movies:', allMovies.length);
         
         // Return combined results in the same format as TMDB
         res.json({
             page: 1,
             results: allMovies,
-            total_pages: response1.data.total_pages,
             total_results: allMovies.length
         });
     } catch (error) {
