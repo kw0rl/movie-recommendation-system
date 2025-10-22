@@ -16,7 +16,6 @@ interface FavoriteButtonProps {
   movie: Movie;
   className?: string;
 }
-
 export default function FavoriteButton({ movie, className = '' }: FavoriteButtonProps) {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,10 +25,13 @@ export default function FavoriteButton({ movie, className = '' }: FavoriteButton
     // Check if user is logged in
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
-    
+
     if (token && userData) {
       setUser(JSON.parse(userData));
       checkFavoriteStatus();
+    } else {
+      setUser(null);
+      setIsFavorite(false);
     }
   }, [movie.id]);
 
@@ -44,6 +46,14 @@ export default function FavoriteButton({ movie, className = '' }: FavoriteButton
         }
       });
 
+      if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        setUser(null);
+        setIsFavorite(false);
+        return;
+      }
+
       if (response.ok) {
         const data = await response.json();
         setIsFavorite(data.isFavorite);
@@ -54,10 +64,9 @@ export default function FavoriteButton({ movie, className = '' }: FavoriteButton
   };
 
   const toggleFavorite = async (e: React.MouseEvent) => {
-    // Prevent event from bubbling up to parent Link
     e.preventDefault();
     e.stopPropagation();
-    
+
     const token = localStorage.getItem('token');
     if (!token) {
       alert('Please login to add favorites');
@@ -68,7 +77,6 @@ export default function FavoriteButton({ movie, className = '' }: FavoriteButton
 
     try {
       if (isFavorite) {
-        // Remove from favorites
         const response = await fetch(`http://localhost:5000/api/favorites/${movie.id}`, {
           method: 'DELETE',
           headers: {
@@ -76,11 +84,19 @@ export default function FavoriteButton({ movie, className = '' }: FavoriteButton
           }
         });
 
+        if (response.status === 401 || response.status === 403) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          setUser(null);
+          setIsFavorite(false);
+          alert('Your session has expired. Please log in again.');
+          return;
+        }
+
         if (response.ok) {
           setIsFavorite(false);
         }
       } else {
-        // Add to favorites
         const response = await fetch('http://localhost:5000/api/favorites', {
           method: 'POST',
           headers: {
@@ -97,6 +113,15 @@ export default function FavoriteButton({ movie, className = '' }: FavoriteButton
             movieOverview: movie.overview
           })
         });
+
+        if (response.status === 401 || response.status === 403) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          setUser(null);
+          setIsFavorite(false);
+          alert('Your session has expired. Please log in again.');
+          return;
+        }
 
         if (response.ok) {
           setIsFavorite(true);

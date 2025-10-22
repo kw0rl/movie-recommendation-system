@@ -225,7 +225,7 @@ export default function Home() {
               <div className="sketch-border sketch-shadow bg-white p-8 sm:p-12 inline-block">
                 <div className="text-6xl sm:text-8xl mb-4 sm:mb-6">📖</div>
                 <p className="text-xl sm:text-2xl text-black font-bold px-4" style={{ fontFamily: "'Shadows Into Light', cursive" }}>
-                  No movies available or loading...
+                 loading...
                 </p>
                 <div className="mt-4 w-24 sm:w-32 h-1 bg-black mx-auto opacity-50"></div>
               </div>

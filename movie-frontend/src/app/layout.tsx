@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Patrick_Hand } from "next/font/google";
 import "./globals.css";
+import ChatBox from "@/components/ChatBox";
 
 const patrickHand = Patrick_Hand({
   weight: "400",
@@ -32,6 +33,7 @@ export default function RootLayout({
       </head>
       <body className={`${patrickHand.variable} antialiased`} style={{ fontFamily: 'Patrick Hand, cursive' }}>
         {children}
+        <ChatBox />
       </body>
     </html>
   );

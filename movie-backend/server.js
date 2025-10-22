@@ -7,6 +7,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/auth');
 const favoritesRoutes = require('./routes/favorites');
 const recommendationsRoutes = require('./routes/recommendations');
+const aiRoutes = require('./routes/ai');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/favorites', favoritesRoutes);
 app.use('/api/recommendations', recommendationsRoutes);
+app.use('/api/ai', aiRoutes);
 
 app.get('/api/movies/popular', async (req, res) => {
     try {

@@ -88,48 +88,52 @@ export default function SearchPage() {
       <Head>
         <title>Search Movies - Movie Recommendation</title>
       </Head>
-      <main className="container mx-auto px-6 py-8 max-w-7xl">
+      <main className="container mx-auto px-3 sm:px-6 py-4 sm:py-8 max-w-7xl">
         {/* Hand-drawn Navigation */}
-        <nav className="mb-12 p-6 sketch-border sketch-shadow bg-white relative">
+        <nav className="mb-8 sm:mb-12 p-3 sm:p-6 sketch-border sketch-shadow bg-white relative">
           <div className="flex items-center justify-between">
             {/* Left side - Navigation */}
-            <div className="flex items-center space-x-8 text-lg">
+            <div className="flex items-center space-x-2 sm:space-x-8 text-sm sm:text-lg">
               <Link 
                 href="/" 
                 className="text-black hover:text-gray-600 font-bold border-b-2 border-transparent hover:border-gray-600 border-dashed pb-1 transition-all duration-200 cursor-pointer inline-block"
               >
-                Homepage
+                <span className="hidden sm:inline">Homepage</span>
+                <span className="sm:hidden">Home</span>
               </Link>
-              <span className="text-black text-2xl pointer-events-none">•</span>
+              <span className="text-black text-lg sm:text-2xl pointer-events-none">•</span>
               <Link 
                 href="/search" 
                 className="text-black hover:text-gray-600 font-bold border-b-2 border-black border-dashed pb-1 transition-all duration-200 cursor-pointer inline-block"
               >
-                ⌕ Search Movies
+                <span className="hidden sm:inline">⌕ Search Movies</span>
+                <span className="sm:hidden">⌕ Search</span>
               </Link>
               {user && (
                 <>
-                  <span className="text-black text-2xl pointer-events-none">•</span>
+                  <span className="text-black text-lg sm:text-2xl pointer-events-none">•</span>
                   <Link 
                     href="/favorites" 
                     className="text-black hover:text-gray-600 font-bold border-b-2 border-transparent hover:border-gray-600 border-dashed pb-1 transition-all duration-200 cursor-pointer inline-block"
                   >
-                    💖 My Favorites
+                    <span className="hidden sm:inline">My Favorites</span>
+                    <span className="sm:hidden">Favorites</span>
                   </Link>
                 </>
               )}
             </div>
             
             {/* Right side - Authentication */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               {user ? (
                 <>
-                  <span className="text-black text-lg font-bold">
-                    Welcome, {user.name}
+                  <span className="text-black text-sm sm:text-lg font-bold whitespace-nowrap">
+                    <span className="hidden sm:inline">Welcome, </span>
+                    <span className="inline">{user.name}</span>
                   </span>
                   <button
                     onClick={handleLogout}
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md font-bold transition-colors sketch-border"
+                    className="bg-red-500 hover:bg-red-600 text-white px-3 sm:px-4 py-2 rounded-md font-bold transition-colors sketch-border text-sm sm:text-base whitespace-nowrap"
                   >
                     Logout
                   </button>
@@ -138,15 +142,16 @@ export default function SearchPage() {
                 <div className="flex items-center space-x-2">
                   <Link
                     href="/login"
-                    className="text-blue-600 hover:text-blue-800 px-3 py-2 rounded-md font-bold transition-colors"
+                    className="text-blue-600 hover:text-blue-800 px-3 sm:px-3 py-2 rounded-md font-bold transition-colors text-sm sm:text-base whitespace-nowrap"
                   >
                     Login
                   </Link>
                   <Link
                     href="/register"
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-bold transition-colors sketch-border"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-3 sm:px-4 py-2 rounded-md font-bold transition-colors sketch-border text-sm sm:text-base whitespace-nowrap"
                   >
-                    Register
+                    <span className="hidden sm:inline">Register</span>
+                    <span className="sm:hidden">Register</span>
                   </Link>
                 </div>
               )}
@@ -155,20 +160,20 @@ export default function SearchPage() {
         </nav>
         
         {/* Hand-drawn Title Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-6xl font-bold mb-6 text-black relative" style={{ fontFamily: "'Shadows Into Light', cursive" }}>
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-4xl sm:text-6xl font-bold mb-4 sm:mb-6 text-black relative" style={{ fontFamily: "'Shadows Into Light', cursive" }}>
             ⌕ Search Movies ⌕
-            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-64 h-1 bg-black opacity-30"></div>
+            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-48 sm:w-64 h-1 bg-black opacity-30"></div>
           </h1>
-          <p className="text-xl text-gray-700 italic">Find your favorite movies!</p>
+          <p className="text-lg sm:text-xl text-gray-700 italic px-4">Find your favorite movies!</p>
         </div>
-
+        
         {/* Sketch-style Search Form */}
-        <form onSubmit={searchMovies} className="mb-12 max-w-3xl mx-auto">
-          <div className="sketch-border sketch-shadow bg-white p-6">
-            <div className="flex gap-4 items-end">
+        <form onSubmit={searchMovies} className="mb-8 sm:mb-12 max-w-3xl mx-auto">
+          <div className="sketch-border sketch-shadow bg-white p-3 sm:p-6">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-end">
               <div className="flex-1">
-                <label className="block text-lg font-bold mb-2 text-black">
+                <label className="block text-sm sm:text-lg font-bold mb-2 text-black">
                   Movie Title:
                 </label>
                 <input
@@ -176,14 +181,14 @@ export default function SearchPage() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Enter movie title..."
-                  className="w-full px-4 py-3 sketch-border bg-yellow-50 text-black placeholder-gray-500 text-lg focus:outline-none focus:bg-white transition-colors"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 sketch-border bg-yellow-50 text-black placeholder-gray-500 text-sm sm:text-lg focus:outline-none focus:bg-white transition-colors"
                   style={{ fontFamily: "'Patrick Hand', cursive" }}
                 />
               </div>
               <button
                 type="submit"
                 disabled={loading || !query.trim()}
-                className="px-8 py-3 sketch-border sketch-shadow sketch-hover bg-white text-black font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed crosshatch relative"
+                className="px-6 sm:px-8 py-2 sm:py-3 sketch-border sketch-shadow sketch-hover bg-white text-black font-bold text-sm sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed crosshatch relative whitespace-nowrap mt-6 sm:mt-0"
               >
                 {loading ? '⏳ Searching...' : '🔍 Search!'}
               </button>
@@ -217,60 +222,60 @@ export default function SearchPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
                   {movies.map(movie => (
                     <Link 
                       key={movie.id} 
                       href={`/movie/${movie.id}`}
-                      className="sketch-border sketch-shadow sketch-hover bg-white p-6 relative crosshatch transition-all duration-300 block cursor-pointer"
+                      className="sketch-border sketch-shadow sketch-hover bg-white p-4 sm:p-6 relative crosshatch transition-all duration-300 block cursor-pointer"
                     >
                       {/* Movie Poster with sketch frame */}
-                      <div className="mb-4 sketch-border bg-gray-50 p-2">
+                      <div className="mb-3 sm:mb-4 sketch-border bg-gray-50 p-2">
                         {movie.poster_path ? (
                           <img
                             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                             alt={movie.title}
-                            className="w-full h-80 object-contain sketch-border bg-white transition-all duration-500 filter grayscale hover:grayscale-0 hover:brightness-100 contrast-125"
+                            className="w-full h-64 sm:h-80 object-contain sketch-border bg-white transition-all duration-500 filter grayscale hover:grayscale-0 hover:brightness-100 contrast-125"
                             style={{ 
                               border: '2px solid black',
                               aspectRatio: '2/3'
                             }}
                           />
                         ) : (
-                          <div className="w-full h-80 sketch-border bg-gray-100 flex items-center justify-center" style={{ aspectRatio: '2/3' }}>
-                            <span className="text-6xl">✎</span>
+                          <div className="w-full h-64 sm:h-80 sketch-border bg-gray-100 flex items-center justify-center" style={{ aspectRatio: '2/3' }}>
+                            <span className="text-4xl sm:text-6xl">✎</span>
                           </div>
                         )}
                       </div>
                       
                       {/* Movie Info */}
-                      <div className="space-y-3">
+                      <div className="space-y-2 sm:space-y-3">
                         <div className="flex items-start justify-between">
-                          <h3 className="text-xl font-bold text-black mb-3 leading-tight flex-1" style={{ fontFamily: "'Shadows Into Light', cursive" }}>
+                          <h3 className="text-lg sm:text-xl font-bold text-black mb-2 sm:mb-3 leading-tight flex-1 pr-2" style={{ fontFamily: "'Shadows Into Light', cursive" }}>
                             "{movie.title}"
                           </h3>
-                          <FavoriteButton movie={movie} className="ml-2 mt-1" />
+                          <FavoriteButton movie={movie} className="ml-1 sm:ml-2 mt-1 flex-shrink-0" />
                         </div>
                         
                         <div className="flex items-center justify-between sketch-border bg-gray-50 p-2">
                           {movie.release_date && (
-                            <span className="text-sm text-black font-bold">
-                              📅 {new Date(movie.release_date).getFullYear()}
+                            <span className="text-xs sm:text-sm text-black font-bold">
+                              {new Date(movie.release_date).getFullYear()}
                             </span>
                           )}
                           {movie.vote_average && (
-                            <span className="text-sm text-black font-bold flex items-center">
+                            <span className="text-xs sm:text-sm text-black font-bold flex items-center">
                               ★ {movie.vote_average.toFixed(1)}/10
                             </span>
                           )}
                         </div>
                         
                         {movie.overview && (
-                          <div className="sketch-border bg-yellow-50 p-3 relative">
-                            <p className="text-black text-sm leading-relaxed italic">
+                          <div className="sketch-border bg-yellow-50 p-2 sm:p-3 relative">
+                            <p className="text-black text-xs sm:text-sm leading-relaxed italic">
                               "{movie.overview.substring(0, 150)}..."
                             </p>
-                            <div className="absolute top-1 right-2 text-yellow-600">📝</div>
+                            <div className="absolute top-1 right-2 text-yellow-600 text-xs sm:text-sm">📝</div>
                           </div>
                         )}
                         
@@ -317,10 +322,10 @@ export default function SearchPage() {
         )}
         
         {/* Hand-drawn footer doodle */}
-        <div className="mt-16 text-center">
+        <div className="mt-12 sm:mt-16 text-center">
           <div className="inline-flex items-center space-x-2 text-gray-600">
             <span>✧</span>
-            <span className="text-sm italic">Happy searching! ⌕</span>
+            <span className="text-xs sm:text-sm italic">Happy searching! ⌕</span>
             <span>✧</span>
           </div>
         </div>
