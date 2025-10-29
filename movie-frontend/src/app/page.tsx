@@ -54,7 +54,7 @@ export default function Home() {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies/popular`);
+        const res = await fetch('https://wishlistbackend-s9uso.ondigitalocean.app/api/movies/popular');
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }

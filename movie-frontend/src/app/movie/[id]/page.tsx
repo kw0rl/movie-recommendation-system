@@ -161,7 +161,7 @@ export default function MovieDetailPage() {
       
       setLoading(true);
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies/${params.id}`);
+        const res = await fetch(`https://wishlistbackend-s9uso.ondigitalocean.app/api/movies/${params.id}`);
         if (!res.ok) {
           throw new Error('Failed to fetch movie details');
         }
