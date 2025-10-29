@@ -64,7 +64,7 @@ export default function ChatBox() {
         return;
       }
 
-      const response = await fetch('http://localhost:5000/api/ai/chat', {
+      const response = await fetch('https://wishlistbackend-s9uso.ondigitalocean.app/api/ai/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

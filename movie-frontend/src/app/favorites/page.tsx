@@ -63,12 +63,12 @@ export default function FavoritesPage() {
       
       // Run both API calls in parallel for better performance
       const [favoritesResponse, recommendationsResponse] = await Promise.allSettled([
-        fetch('http://localhost:5000/api/favorites', {
+        fetch('https://wishlistbackend-s9uso.ondigitalocean.app/api/favorites', {
           headers: {
             'Authorization': `Bearer ${token}`
-          }
+          },
         }),
-        fetch('http://localhost:5000/api/recommendations/detailed', {
+        fetch('https://wishlistbackend-s9uso.ondigitalocean.app/api/recommendations/detailed', {
           headers: {
             'Authorization': `Bearer ${token}`
           }

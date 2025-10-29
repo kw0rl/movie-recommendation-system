@@ -40,7 +40,7 @@ export default function FavoriteButton({ movie, className = '' }: FavoriteButton
       const token = localStorage.getItem('token');
       if (!token) return;
 
-      const response = await fetch(`http://localhost:5000/api/favorites/check/${movie.id}`, {
+      const response = await fetch(`https://wishlistbackend-s9uso.ondigitalocean.app/api/favorites/check/${movie.id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -77,7 +77,8 @@ export default function FavoriteButton({ movie, className = '' }: FavoriteButton
 
     try {
       if (isFavorite) {
-        const response = await fetch(`http://localhost:5000/api/favorites/${movie.id}`, {
+        // Remove from favorites
+        const response = await fetch(`https://wishlistbackend-s9uso.ondigitalocean.app/api/favorites/${movie.id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -97,7 +98,8 @@ export default function FavoriteButton({ movie, className = '' }: FavoriteButton
           setIsFavorite(false);
         }
       } else {
-        const response = await fetch('http://localhost:5000/api/favorites', {
+        // Add to favorites
+        const response = await fetch('https://wishlistbackend-s9uso.ondigitalocean.app/api/favorites', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
