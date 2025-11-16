@@ -19,7 +19,7 @@ const register = async (req, res) => {
 
         // Check if user already exists
         const [existingUsers] = await db.execute(
-            'SELECT id FROM users WHERE email = ?',
+            'SELECT id FROM users WHERE email = $1',
             [email]
         );
 
@@ -33,13 +33,15 @@ const register = async (req, res) => {
 
         // Insert new user
         const [result] = await db.execute(
-            'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
+            'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id',
             [name, email, hashedPassword]
         );
 
+        const userId = result[0].id;
+
         // Create JWT token
         const token = jwt.sign(
-            { userId: result.insertId, email },
+            { userId, email },
             JWT_SECRET,
             { expiresIn: '7d' }
         );
@@ -48,7 +50,7 @@ const register = async (req, res) => {
             message: 'User registered successfully',
             token,
             user: {
-                id: result.insertId,
+                id: userId,
                 name,
                 email
             }
@@ -73,7 +75,7 @@ const login = async (req, res) => {
 
         // Find user by email
         const [users] = await db.execute(
-            'SELECT id, name, email, password FROM users WHERE email = ?',
+            'SELECT id, name, email, password FROM users WHERE email = $1',
             [email]
         );
 

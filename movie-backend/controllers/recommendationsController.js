@@ -8,7 +8,7 @@ const getRecommendations = async (req, res) => {
 
         // Get user's favorites
         const [favorites] = await db.execute(
-            'SELECT movie_id, movie_title, movie_genres, movie_rating, movie_year FROM favorites WHERE user_id = ?',
+            'SELECT movie_id, movie_title, movie_genres, movie_rating, movie_year FROM favorites WHERE user_id = $1',
             [userId]
         );
 
@@ -46,7 +46,7 @@ const getRecommendationsWithExplanation = async (req, res) => {
         const [favorites] = await db.execute(
             `SELECT movie_id, movie_title, movie_genres, movie_rating, movie_year, movie_overview 
              FROM favorites 
-             WHERE user_id = ? 
+             WHERE user_id = $1 
              ORDER BY created_at DESC`,
             [userId]
         );

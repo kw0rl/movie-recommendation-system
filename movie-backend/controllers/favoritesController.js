@@ -16,7 +16,7 @@ const addToFavorites = async (req, res) => {
 
         // Check if already in favorites
         const [existing] = await db.execute(
-            'SELECT id FROM favorites WHERE user_id = ? AND movie_id = ?',
+            'SELECT id FROM favorites WHERE user_id = $1 AND movie_id = $2',
             [userId, movieId]
         );
 
@@ -28,13 +28,13 @@ const addToFavorites = async (req, res) => {
         const [result] = await db.execute(
             `INSERT INTO favorites 
              (user_id, movie_id, movie_title, movie_poster, movie_genres, movie_rating, movie_year, movie_overview) 
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
             [userId, movieId, movieTitle, moviePoster, JSON.stringify(movieGenres), movieRating, movieYear, movieOverview]
         );
 
         res.status(201).json({
             message: 'Movie added to favorites',
-            favoriteId: result.insertId
+            favoriteId: result[0].id
         });
 
     } catch (error) {
@@ -50,11 +50,11 @@ const removeFromFavorites = async (req, res) => {
         const { movieId } = req.params;
 
         const [result] = await db.execute(
-            'DELETE FROM favorites WHERE user_id = ? AND movie_id = ?',
+            'DELETE FROM favorites WHERE user_id = $1 AND movie_id = $2',
             [userId, movieId]
         );
 
-        if (result.affectedRows === 0) {
+        if (result.length === 0) {
             return res.status(404).json({ message: 'Movie not found in favorites' });
         }
 
@@ -74,7 +74,7 @@ const getUserFavorites = async (req, res) => {
         const [favorites] = await db.execute(
             `SELECT movie_id, movie_title, movie_poster, movie_genres, movie_rating, movie_year, movie_overview, created_at 
              FROM favorites 
-             WHERE user_id = ? 
+             WHERE user_id = $1 
              ORDER BY created_at DESC`,
             [userId]
         );
@@ -100,7 +100,7 @@ const checkFavoriteStatus = async (req, res) => {
         const { movieId } = req.params;
 
         const [result] = await db.execute(
-            'SELECT id FROM favorites WHERE user_id = ? AND movie_id = ?',
+            'SELECT id FROM favorites WHERE user_id = $1 AND movie_id = $2',
             [userId, movieId]
         );
 

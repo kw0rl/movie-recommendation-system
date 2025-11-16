@@ -23,7 +23,7 @@ const chat = async (req, res) => {
         const [favorites] = await db.execute(
             `SELECT movie_title, movie_genres, movie_rating, movie_year 
              FROM favorites 
-             WHERE user_id = ? 
+             WHERE user_id = $1 
              ORDER BY created_at DESC 
              LIMIT 10`,
             [userId]
