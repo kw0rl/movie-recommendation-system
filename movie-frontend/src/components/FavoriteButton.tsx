@@ -40,7 +40,7 @@ export default function FavoriteButton({ movie, className = '' }: FavoriteButton
       const token = localStorage.getItem('token');
       if (!token) return;
 
-      const response = await fetch(`https://wishlistbackend-s9uso.ondigitalocean.app/api/favorites/check/${movie.id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://movie-recommendation-system-075d.onrender.com'}/api/favorites/check/${movie.id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -78,7 +78,7 @@ export default function FavoriteButton({ movie, className = '' }: FavoriteButton
     try {
       if (isFavorite) {
         // Remove from favorites
-        const response = await fetch(`https://wishlistbackend-s9uso.ondigitalocean.app/api/favorites/${movie.id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://movie-recommendation-system-075d.onrender.com'}/api/favorites/${movie.id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -99,7 +99,7 @@ export default function FavoriteButton({ movie, className = '' }: FavoriteButton
         }
       } else {
         // Add to favorites
-        const response = await fetch('https://wishlistbackend-s9uso.ondigitalocean.app/api/favorites', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://movie-recommendation-system-075d.onrender.com'}/api/favorites`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { API_BASE_URL } from '@/config/api';
 
 interface FormData {
   name: string;
@@ -79,7 +80,7 @@ export default function RegisterPage() {
     setError('');
 
     try {
-      const response = await fetch('https://wishlistbackend-s9uso.ondigitalocean.app/api/auth/register', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

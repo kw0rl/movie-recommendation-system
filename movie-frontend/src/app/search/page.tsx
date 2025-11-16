@@ -61,7 +61,7 @@ export default function SearchPage() {
     setHasSearched(true);
     
     try {
-      const res = await fetch(`https://wishlistbackend-s9uso.ondigitalocean.app/api/movies/search?query=${encodeURIComponent(query)}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://movie-recommendation-system-075d.onrender.com'}/api/movies/search?query=${encodeURIComponent(query)}`);
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }

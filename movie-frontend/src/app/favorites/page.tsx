@@ -63,12 +63,12 @@ export default function FavoritesPage() {
       
       // Run both API calls in parallel for better performance
       const [favoritesResponse, recommendationsResponse] = await Promise.allSettled([
-        fetch('https://wishlistbackend-s9uso.ondigitalocean.app/api/favorites', {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://movie-recommendation-system-075d.onrender.com'}/api/favorites`, {
           headers: {
             'Authorization': `Bearer ${token}`
           },
         }),
-        fetch('https://wishlistbackend-s9uso.ondigitalocean.app/api/recommendations/detailed', {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://movie-recommendation-system-075d.onrender.com'}/api/recommendations/detailed`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

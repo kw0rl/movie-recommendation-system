@@ -64,7 +64,7 @@ export default function ChatBox() {
         return;
       }
 
-      const response = await fetch('https://wishlistbackend-s9uso.ondigitalocean.app/api/ai/chat', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://movie-recommendation-system-075d.onrender.com'}/api/ai/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
