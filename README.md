@@ -109,7 +109,3 @@ Ready for deployment to:
 ## 📄 License
 
 Private project for learning purposes.
-
-## 👨‍💻 Developer
-
-Built with ❤️ and lots of ☕
